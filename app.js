@@ -2,22 +2,24 @@ const express = require('express');
 const app = express();
 const connectDB = require('./db/connect');
 require('dotenv').config();
+const notFound = require('./middleware/not-found')
 
 // Middleware
 app.use(express.json())
 
 const homepage = require('./routes/homepage.js')
 const tasks = require('./routes/tasks.js')
+const errorHandlerMiddleWare = require('./middleware/error-handler')
 
 // Routes
     // Homepage
     app.use('/', homepage);
-    // Index ('/api/v1/tasks')
-    // New + Create ('/api/v1/tasks')
-    // Show ('/api/v1/tasks/:id')
+    // CRUD Task
     app.use('/api/v1/tasks', tasks);
-    // Edit + Update ('/api/v1/tasks/:id')
-    // Delete ('/api/v1/tasks/:id')
+    // Not found
+    app.use(notFound)
+    // Error Handler
+    app.use(errorHandlerMiddleWare)
 
 const port = 3000;
 
